@@ -108,8 +108,8 @@ git:
     repositories:
       - repository: https://github.com/Aymaru/dags-test.git
         branch: main
-        name: dags-test1
-        path: ./
+        name: dags-test
+        path: ./dags
   sync:
     interval: 60
 
