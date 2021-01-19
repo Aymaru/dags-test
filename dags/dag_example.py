@@ -8,7 +8,7 @@ from airflow import DAG
 
 # Import the Operators, needed to operate
 from airflow.operators.bash_operator import BashOperator
-from airflow.operators.python import PythonOperator
+from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
 
 # Default arguments that will get passed on to each operator

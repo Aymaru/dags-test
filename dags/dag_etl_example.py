@@ -65,4 +65,4 @@ def test_taskflow_api_etl():
 
     load(summary["total_orders"],summary["total_order_value"])
 
-test_etl_dag = test_taskflow_api_etl()
+#test_etl_dag = test_taskflow_api_etl()
