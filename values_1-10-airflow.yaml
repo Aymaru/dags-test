@@ -125,7 +125,9 @@ ingress:
   enabled: true
   #pathType: ImplementationSpecific
   certManager: true
-  #annotations:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-snprod"
   hosts:
     - name: airflow.smartnow.la
       path: /
