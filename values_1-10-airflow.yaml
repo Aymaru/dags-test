@@ -121,3 +121,16 @@ redis:
 #     prometheus.io/scrape: 'true'
 #     prometheus.io/port: '9112'
  
+ingress:
+  enabled: true
+  #pathType: ImplementationSpecific
+  certManager: true
+  #annotations:
+  hosts:
+    - name: airflow.smartnow.la
+      path: /
+      tls: true
+      tlsHosts: [
+        airflow.smartnow.la
+      ]
+      tlsSecret: airflow.local-tls
