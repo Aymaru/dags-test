@@ -11,7 +11,7 @@ web:
   image:
     registry: docker.io
     repository: bitnami/airflow
-    tag: 2.0.0-debian-10-r3
+    tag: 2.0.0-debian-10-r2
     pullPolicy: IfNotPresent
 #   replicaCount: 1
 
