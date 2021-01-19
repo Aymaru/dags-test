@@ -1,101 +1,68 @@
+#test
 executor: 'CeleryExecutor'
 
 auth:
   forcePassword: false
-  username: admin
-  password: admin
-  fernetKey: a1RMNEc2RUk3dEE5MmVyWDdkM0hPOWJnb3JIZEtOcUs=
+  username: user
+  password: ydomZ1TYF4
+  fernetKey: dFNXQUpidDRWT2cwamtyZElmT1RTMGpBejBMNmJhOUs=
 
 web:
   image:
     registry: docker.io
     repository: bitnami/airflow
-    tag: 1.10.14-debian-10-r20
+    tag: 2.0.0-debian-10-r3
     pullPolicy: IfNotPresent
-    debug: false
-  replicaCount: 1
+#   replicaCount: 1
 
-  containerPort: 8080
+#   containerPort: 8088 #8080
   
-  livenessProbe:
-    enabled: true
-    initialDelaySeconds: 180
-    periodSeconds: 20
-    timeoutSeconds: 5
-    failureThreshold: 6
-    successThreshold: 1
-  readinessProbe:
-    enabled: true
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 6
-    successThreshold: 1
-  
-  podDisruptionBudget:
-    enabled: false
-    minAvailable: 1
-
+#   livenessProbe:
+#     enabled: true
+#     initialDelaySeconds: 240
+#     periodSeconds: 20
+#     timeoutSeconds: 5
+#     failureThreshold: 6
+#     successThreshold: 1
+#   readinessProbe:
+#     enabled: true
+#     initialDelaySeconds: 60
+#     periodSeconds: 10
+#     timeoutSeconds: 5
+#     failureThreshold: 6
+#     successThreshold: 1
 
 scheduler:
-
   image:
     registry: docker.io
     repository: bitnami/airflow-scheduler
-    tag: 1.10.14-debian-10-r29
-  
-    pullPolicy: IfNotPresent
-      
-  replicaCount: 1
- 
-  podDisruptionBudget:
-    enabled: false
-    minAvailable: 1
- 
+    tag: 2.0.0-debian-10-r2 
+    pullPolicy: IfNotPresent      
+#   replicaCount: 1
 
-## Worker component related properties
-##
-worker:
- 
+worker: 
   image:
     registry: docker.io
     repository: bitnami/airflow-worker
-    tag: 1.10.14-debian-10-r31
-  
+    tag: 2-debian-10
     pullPolicy: IfNotPresent
+#   port: 8543 #8793 
+#   replicaCount: 1
 
-    debug: false
-
-  port: 8793
-  replicaCount: 1
-
-  livenessProbe:
-    enabled: true
-    initialDelaySeconds: 180
-    periodSeconds: 20
-    timeoutSeconds: 5
-    failureThreshold: 6
-    successThreshold: 1
-  readinessProbe:
-    enabled: true
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 6
-    successThreshold: 1
-
-  podDisruptionBudget:
-    enabled: false
-    minAvailable: 1
-
-  autoscaling:
-    enabled: false
-    replicas:
-      min: 1
-      max: 3
-    targets:
-      cpu: 80
-      memory: 80
+#   livenessProbe:
+#     enabled: true
+#     initialDelaySeconds: 240
+#     periodSeconds: 20
+#     timeoutSeconds: 5
+#     failureThreshold: 6
+#     successThreshold: 1
+#   readinessProbe:
+#     enabled: true
+#     initialDelaySeconds: 60
+#     periodSeconds: 10
+#     timeoutSeconds: 5
+#     failureThreshold: 6
+#     successThreshold: 1
 
 git:
   image:
@@ -113,56 +80,44 @@ git:
   sync:
     interval: 60
 
-podSecurityContext:
-  enabled: true
-  fsGroup: 1001
-
-containerSecurityContext:
-  enabled: true
-  runAsUser: 1001
-
-networkPolicies:
-  enabled: false
-
-service:
-  type: ClusterIP
-  port: 8080
-
+# service:
+#   type: ClusterIP
+#   port: 8088 #8080
 
 postgresql:
   enabled: true
   postgresqlUsername: bn_airflow
-  postgresqlPassword: admin
-  postgresqlDatabase: bitnami_airflow
-
-externalDatabase:
-  host: localhost
-  user: bn_airflow 
-  password: admin
-  database: bitnami_airflow
-  port: 5432
+  postgresqlPassword: JSOi0H4v8n
+  # postgresqlDatabase: bitnami_airflow
+# externalDatabase:
+#   host: localhost
+#   user: bn_airflow 
+#   password: admin
+#   database: bitnami_airflow
+#   port: 5555 #5432
 
 redis:
-  enabled: true
-  cluster:
-    enabled: false  
-  password: admin
+#   enabled: true
+#   cluster:
+#     enabled: false  
+  password: 1JemwRGPob
 
-externalRedis: 
-  host: localhost
-  port: 6379 
-  password: admin
-  username: admin
+# externalRedis: 
+#   host: localhost
+#   port: 6666 #6379 
+#   password: admin
+#   username: admin
 
-metrics:
-  enabled: false
+# metrics:
+#   enabled: false
 
-  image:
-    registry: docker.io
-    repository: bitnami/airflow-exporter
-    tag: 0.20180711.0-debian-10-r326
-    pullPolicy: IfNotPresent
+#   image:
+#     registry: docker.io
+#     repository: bitnami/airflow-exporter
+#     tag: 0.20180711.0-debian-10-r326
+#     pullPolicy: IfNotPresent
 
-  podAnnotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/port: '9112'
+#   podAnnotations:
+#     prometheus.io/scrape: 'true'
+#     prometheus.io/port: '9112'
+ 
