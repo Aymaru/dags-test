@@ -24,7 +24,7 @@ dag = DAG(
 
 
 def access_database():
-    request = "SELECT * FROM prueba.company;" #"SELECT schema_name FROM information_schema.schemata;"
+    request = "SELECT * FROM public.company;" #"SELECT schema_name FROM information_schema.schemata;"
     pg_hook  = PostgresHook(postgre_conn_id="mypsql",schema="prueba")
     connection = pg_hook.get_conn()
     cursor = connection.cursor()
