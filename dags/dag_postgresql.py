@@ -33,11 +33,9 @@ def access_database():
     cursor = connection.cursor()
     cursor.execute(request)
     sources = cursor.fetchall()
-    print('result: ' + sources)
+
     for source in sources:
-        print(source[0])
-        print(source[1])
-        print(source[2])
+        print(source)
     return sources
 
 hooktask = PythonOperator(
