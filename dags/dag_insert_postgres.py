@@ -36,7 +36,7 @@ def insert_values_sales():
         rand_amount = randrange(10000,500000)
 
         cursor.execute ("INSERT INTO sales(name,amount) VALUES ( %(name)s, %(amount)s )", {'name':names[rand_name],'amount':rand_amount})
-    cursor.commit()
+ 
     cursor.close()
 
 hook_task = PythonOperator(
