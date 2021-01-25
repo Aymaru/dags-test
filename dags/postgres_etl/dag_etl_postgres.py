@@ -1,4 +1,4 @@
-import pandas
+from pandas import DataFrame
 from datetime import datetime, timedelta
 from random import randrange
 from airflow import DAG
@@ -31,15 +31,17 @@ def generate_report(**kwargs):
     print('generate and push report')
     print (result)
     #kwards['ti'].xcom_push(key='sales_report',value=result)
-    return {'count': result[0], 'total':result[1], 'date':datetime.now()}
+    #return {'count': result[0], 'total':result[1], 'date':datetime.now()}
+    return result
 
-def transform(**kwargs):
-    ti = kwargs['ti']
+
 
 def log_report(**kwargs):
     ti = kwargs['ti']
-    report = ti.xcom_pull(task_ids='generate_sales_report')
-
+    #report = ti.xcom_pull(task_ids='generate_sales_report')
+    result = ti.xcom_pull(task_ids='generate_sales_report')
+    report = {'count': result[0], 'total':result[1], 'date':datetime.now()}
+    
     request = "INSERT INTO reports(count,total,date) VALUES ( %(count)s, %(total)s, %(date)s );"
     pg_hook  = PostgresHook(postgres_conn_id="mypsql",schema="postgres")
     connection = pg_hook.get_conn()
@@ -58,6 +60,12 @@ task_generate_report = PythonOperator(
     dag=dag
 )
 
+task_transform = PythonOperator(
+    task_id = 'transform_sales_report',
+    python_callable=transform,
+    provide_context=True,
+    dag=dag
+)
 
 task_log_report = PythonOperator(
     task_id = 'log_report',
@@ -66,4 +74,4 @@ task_log_report = PythonOperator(
     dag=dag
 )
 
-task_generate_report >> task_log_report
+task_generate_report >>  task_log_report
