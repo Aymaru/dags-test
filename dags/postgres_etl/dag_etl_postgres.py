@@ -40,7 +40,7 @@ def log_report(**kwargs):
     pg_hook  = PostgresHook(postgres_conn_id="mypsql",schema="postgres")
     connection = pg_hook.get_conn()
     cursor = connection.cursor()
-    cursor.execute(request, {'count':report['count'],'total':report['total'], 'ts': report['ts']})
+    cursor.execute(request, {'count':report['count'],'total':report['total'], 'date': report['ts']})
     connection.commit()
 
     print('pull and log report')
