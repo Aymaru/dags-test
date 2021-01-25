@@ -38,6 +38,7 @@ def insert_values_sales():
         cursor.execute ("INSERT INTO sales(name,amount) VALUES ( %(name)s, %(amount)s )", {'name':names[rand_name],'amount':rand_amount})
  
     cursor.close()
+    src_conn.commit()
 
 hook_task = PythonOperator(
     task_id='insertIntoSales',
