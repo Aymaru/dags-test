@@ -60,12 +60,12 @@ task_generate_report = PythonOperator(
     dag=dag
 )
 
-task_transform = PythonOperator(
-    task_id = 'transform_sales_report',
-    python_callable=transform,
-    provide_context=True,
-    dag=dag
-)
+#task_transform = PythonOperator(
+#    task_id = 'transform_sales_report',
+#    python_callable=transform,
+#    provide_context=True,
+#    dag=dag
+#)
 
 task_log_report = PythonOperator(
     task_id = 'log_report',
