@@ -21,7 +21,7 @@ dag = DAG( 'postgresql_etl_example',
 
 
 def generate_report(**kwargs):
-    request = "SELECT COUNT(id),SUM(amount) FROM sales;"
+    request = "SELECT COUNT(id) as count,SUM(amount) as total FROM sales;"
     pg_hook  = PostgresHook(postgres_conn_id="mypsql",schema="postgres")
     connection = pg_hook.get_conn()
     cursor = connection.cursor()
@@ -35,6 +35,13 @@ def generate_report(**kwargs):
 def log_report(**kwargs):
     ti = kwargs['ti']
     report = ti.xcom_pull(task_ids='generate_sales_report')
+
+    request = "INSERT INTO reports(count,total,date) VALUES ( %(count)s, %(total)s, %(date)s );"
+    pg_hook  = PostgresHook(postgres_conn_id="mypsql",schema="postgres")
+    connection = pg_hook.get_conn()
+    cursor = connection.cursor()
+    cursor.execute(request, {'count':report['count'],'total':report['total'], 'ts': datetime.now() })
+    connection.commit()
 
     print('pull and log report')
     print(report)

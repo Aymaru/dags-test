@@ -23,7 +23,7 @@ def insert_values_sales():
 
     names = ['Paul', 'Andres', 'Aymaru','Julio','Stward']
     total_inserts = randrange(5,20)
-    request("INSERT INTO sales(name,amount) VALUES ( %(name)s, %(amount)s )", {'name':rand_name,'amount':rand_amount})
+    request = "INSERT INTO sales(name,amount) VALUES ( %(name)s, %(amount)s )"
 
     src = PostgresHook(postgres_conn_id='mypsql',schema='postgres')
     src_conn = src.get_conn()
@@ -34,7 +34,7 @@ def insert_values_sales():
         rand_amount = randrange(10000,500000)
         print('Inserting into sales: name=%s,amount=%d' % (rand_name,rand_amount))
 
-        cursor.execute (request)
+        cursor.execute (request, {'name':rand_name,'amount':rand_amount})
  
     cursor.close()
     src_conn.commit()
