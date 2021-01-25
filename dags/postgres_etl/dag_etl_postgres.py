@@ -44,7 +44,7 @@ def transform(**kwargs):
     print(df)
     print(cantidad)
     print(monto)
-    return {'count': cantidad, 'total':monto, 'date':datetime.now()}
+    return {'count': cantidad.item(), 'total':monto.item(), 'date':datetime.now()}
 
 
 
