@@ -1,3 +1,4 @@
+import pandas
 from datetime import datetime, timedelta
 from random import randrange
 from airflow import DAG
@@ -31,6 +32,9 @@ def generate_report(**kwargs):
     print (result)
     #kwards['ti'].xcom_push(key='sales_report',value=result)
     return {'count': result[0], 'total':result[1], 'date':datetime.now()}
+
+def transform(**kwargs):
+    ti = kwargs['ti']
 
 def log_report(**kwargs):
     ti = kwargs['ti']
