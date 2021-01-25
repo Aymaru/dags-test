@@ -54,3 +54,5 @@ task_log_report = PythonOperator(
     provide_context=True,
     dag=dag
 )
+
+task_generate_report >> task_log_report
