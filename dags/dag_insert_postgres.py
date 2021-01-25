@@ -31,7 +31,7 @@ def insert_values_sales():
     src_conn = src.get_conn()
     cursor = src_conn.cursor()    
 
-    for i in range(0,self.inserts):
+    for i in range(0,total_inserts):
         rand_name = randrange(0,len(names))
         rand_amount = randrange(10000,500000)
 
