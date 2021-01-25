@@ -32,7 +32,7 @@ def access_database():
     sources = cursor.fetchall()
 
     for source in sources:
-        print(source)
+        print(source[0])
     return sources
 
 hooktask = PythonOperator(
