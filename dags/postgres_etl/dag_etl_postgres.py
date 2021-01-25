@@ -34,12 +34,18 @@ def generate_report(**kwargs):
     #return {'count': result[0], 'total':result[1], 'date':datetime.now()}
     return result
 
+def transform(**kwargs):
+    ti = kwargs['ti']
+    result = ti.xcom_pull(task_ids='generate_sales_report')
+
+    return result
+
 
 
 def log_report(**kwargs):
     ti = kwargs['ti']
     #report = ti.xcom_pull(task_ids='generate_sales_report')
-    result = ti.xcom_pull(task_ids='generate_sales_report')
+    result = ti.xcom_pull(task_ids='transform_sales_report')
     report = {'count': result[0], 'total':result[1], 'date':datetime.now()}
     
     request = "INSERT INTO reports(count,total,date) VALUES ( %(count)s, %(total)s, %(date)s );"
@@ -60,12 +66,12 @@ task_generate_report = PythonOperator(
     dag=dag
 )
 
-#task_transform = PythonOperator(
-#    task_id = 'transform_sales_report',
-#    python_callable=transform,
-#    provide_context=True,
-#    dag=dag
-#)
+task_transform = PythonOperator(
+    task_id = 'transform_sales_report',
+    python_callable=transform,
+    provide_context=True,
+    dag=dag
+)
 
 task_log_report = PythonOperator(
     task_id = 'log_report',
@@ -74,4 +80,4 @@ task_log_report = PythonOperator(
     dag=dag
 )
 
-task_generate_report >>  task_log_report
+task_generate_report >> task_transform >> task_log_report
