@@ -20,7 +20,7 @@ dag = DAG( 'postgresql_etl_example',
     tags=["example","etl"] ) 
 
 
-def generate_report():
+def generate_report(**kwargs):
     request = "SELECT COUNT(id),SUM(amount) FROM sales;"
     pg_hook  = PostgresHook(postgres_conn_id="mypsql",schema="postgres")
     connection = pg_hook.get_conn()
