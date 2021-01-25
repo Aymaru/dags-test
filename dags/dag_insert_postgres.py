@@ -4,9 +4,6 @@ from airflow import DAG
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
-from airflow.models.baseoperator import BaseOperator
-from airflow.utils.decorators import apply_defaults
-from dags.operators import SalesInsertOperator
 
 default_args = {
     'owner': 'smartnow',
