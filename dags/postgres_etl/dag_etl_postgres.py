@@ -26,13 +26,19 @@ def generate_report(**kwargs):
     connection = pg_hook.get_conn()
     cursor = connection.cursor()
     cursor.execute(request)
-    sources = cursor.fetchall()
-    for source in sources:
-        print (source)
-    return
+    result = cursor.fetchone()
+    print('generate and push report')
+    print (result)
+    #kwards['ti'].xcom_push(key='sales_report',value=result)
+    return result
 
-# def log_report():
-#     return
+def log_report(**kwargs):
+    ti = kwargs['ti']
+    report = ti.xcom_pull(task_ids='generate_sales_report')
+
+    print('pull and log report')
+    print(report)
+    return
 
 task_generate_report = PythonOperator(
     task_id = 'generate_sales_report',
@@ -42,9 +48,9 @@ task_generate_report = PythonOperator(
 )
 
 
-# task_log_report = PythonOperator(
-#     task_id = 'log_report',
-#     python_callable=log_report,
-#     provide_context=True,
-#     dag=dag
-# )
+task_log_report = PythonOperator(
+    task_id = 'log_report',
+    python_callable=log_report,
+    provide_context=True,
+    dag=dag
+)
