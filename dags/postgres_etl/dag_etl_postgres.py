@@ -31,29 +31,22 @@ def generate_report(**kwargs):
     result = cursor.fetchall()
     print('generate and push report')
     print (result)
-    #kwards['ti'].xcom_push(key='sales_report',value=result)
-    #return {'count': result[0], 'total':result[1], 'date':datetime.now()}
     return result
 
 def transform(**kwargs):
     ti = kwargs['ti']
     result = ti.xcom_pull(task_ids='generate_sales_report')
+    print('Transform Data')
     df = pd.DataFrame(result)
     cantidad = df[0].count()
     monto = df[2].sum()
-    print(df)
-    print(cantidad)
-    print(monto)
     return {'count': cantidad.item(), 'total':monto.item(), 'date':datetime.now()}
 
 
 
 def log_report(**kwargs):
     ti = kwargs['ti']
-    #report = ti.xcom_pull(task_ids='generate_sales_report')
     report = ti.xcom_pull(task_ids='transform_sales_report')
-    #report = {'count': result[0], 'total':result[1], 'date':datetime.now()}
-    
     request = "INSERT INTO reports(count,total,date) VALUES ( %(count)s, %(total)s, %(date)s );"
     pg_hook  = PostgresHook(postgres_conn_id="mypsql",schema="postgres")
     connection = pg_hook.get_conn()
