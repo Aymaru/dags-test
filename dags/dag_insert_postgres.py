@@ -24,7 +24,7 @@ with DAG( 'postgresql_insert_example', default_args=default_args, description='A
         rand_name = randrange(0,len(names))
         rand_amount = randrange(10000,500000)
 
-        cursor.execute ("INSERT sales(name,amount) VALUES ( %(name)s, %(amount)s )", {'name':names[rand_name],'amount':rand_amount})
+        cursor.execute ("INSERT INTO sales(name,amount) VALUES ( %(name)s, %(amount)s )", {'name':names[rand_name],'amount':rand_amount})
 
     
 
