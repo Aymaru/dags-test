@@ -30,7 +30,7 @@ def generate_report(**kwargs):
     print('generate and push report')
     print (result)
     #kwards['ti'].xcom_push(key='sales_report',value=result)
-    return {'count': result[0], 'total':result[1], 'ts':datetime.now()}
+    return {'count': result[0], 'total':result[1], 'date':datetime.now()}
 
 def log_report(**kwargs):
     ti = kwargs['ti']
@@ -40,7 +40,7 @@ def log_report(**kwargs):
     pg_hook  = PostgresHook(postgres_conn_id="mypsql",schema="postgres")
     connection = pg_hook.get_conn()
     cursor = connection.cursor()
-    cursor.execute(request, {'count':report['count'],'total':report['total'], 'date': report['ts']})
+    cursor.execute(request, report)
     connection.commit()
 
     print('pull and log report')

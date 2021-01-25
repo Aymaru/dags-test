@@ -28,7 +28,7 @@ def insert_values_sales():
     src = PostgresHook(postgres_conn_id='mypsql',schema='postgres')
     src_conn = src.get_conn()
     cursor = src_conn.cursor()    
-
+    print ('Inserting %d values' % total_inserts)
     for i in range(0,total_inserts):
         rand_name = names[randrange(0,len(names))]
         rand_amount = randrange(10000,500000)
