@@ -1,4 +1,4 @@
-from pandas import DataFrame
+import pandas as pd
 from datetime import datetime, timedelta
 from random import randrange
 from airflow import DAG
@@ -37,7 +37,8 @@ def generate_report(**kwargs):
 def transform(**kwargs):
     ti = kwargs['ti']
     result = ti.xcom_pull(task_ids='generate_sales_report')
-
+    df = pd.DataFrame(result)
+    print(df)
     return result
 
 
