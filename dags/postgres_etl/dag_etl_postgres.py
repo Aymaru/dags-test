@@ -12,7 +12,7 @@ default_args = {
     'retry_delay': timedelta(seconds=30)
 }
 
-dag = DAG( 'postgresql_insert_example', 
+dag = DAG( 'postgresql_etl_example', 
     default_args=default_args, 
     description='A simple dag example using postgresql to insert into a table', 
     schedule_interval=timedelta(days=1), 
