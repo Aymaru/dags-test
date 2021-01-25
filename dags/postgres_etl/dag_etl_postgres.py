@@ -28,7 +28,7 @@ def generate_report(**kwargs):
     connection = pg_hook.get_conn()
     cursor = connection.cursor()
     cursor.execute(request)
-    result = cursor.fetchone()
+    result = cursor.fetchall()
     print('generate and push report')
     print (result)
     #kwards['ti'].xcom_push(key='sales_report',value=result)
