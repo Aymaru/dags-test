@@ -35,7 +35,7 @@ def generate_report():
 #     return
 
 task_generate_report = PythonOperator(
-    task_id = 'generate_sales_report'
+    task_id = 'generate_sales_report',
     python_callable=generate_report,
     provide_context=True,
     dag=dag
