@@ -40,26 +40,26 @@ def transform(**kwargs):
     result = ti.xcom_pull(task_ids='generate_sales_report')
     df = pd.DataFrame(result)
     cantidad = df[0].count()
-    monto = df[1].sum()
+    monto = df[2].sum()
     print(df)
     print(cantidad)
     print(monto)
-    return result
+    return {'count': cantidad, 'total':monto, 'date':datetime.now()}
 
 
 
 def log_report(**kwargs):
     ti = kwargs['ti']
     #report = ti.xcom_pull(task_ids='generate_sales_report')
-    result = ti.xcom_pull(task_ids='transform_sales_report')
-    report = {'count': result[0], 'total':result[1], 'date':datetime.now()}
+    report = ti.xcom_pull(task_ids='transform_sales_report')
+    #report = {'count': result[0], 'total':result[1], 'date':datetime.now()}
     
-    #request = "INSERT INTO reports(count,total,date) VALUES ( %(count)s, %(total)s, %(date)s );"
-    #pg_hook  = PostgresHook(postgres_conn_id="mypsql",schema="postgres")
-    #connection = pg_hook.get_conn()
-    #cursor = connection.cursor()
-    #cursor.execute(request, report)
-    #connection.commit()
+    request = "INSERT INTO reports(count,total,date) VALUES ( %(count)s, %(total)s, %(date)s );"
+    pg_hook  = PostgresHook(postgres_conn_id="mypsql",schema="postgres")
+    connection = pg_hook.get_conn()
+    cursor = connection.cursor()
+    cursor.execute(request, report)
+    connection.commit()
 
     print('pull and log report')
     print(report)
