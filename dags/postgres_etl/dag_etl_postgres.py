@@ -39,7 +39,11 @@ def transform(**kwargs):
     ti = kwargs['ti']
     result = ti.xcom_pull(task_ids='generate_sales_report')
     df = pd.DataFrame(result)
+    cantidad = df.count(axis='id')
+    monto = df['amount'].sum()
     print(df)
+    print(cantidad)
+    print(monto)
     return result
 
 
