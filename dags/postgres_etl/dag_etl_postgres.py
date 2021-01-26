@@ -21,7 +21,7 @@ dag = DAG( 'postgresql_etl_example',
     tags=["example","etl"] ) 
 
 
-def generate_report(**kwargs):
+def extract(**kwargs):
     #request = "SELECT COUNT(id) as count,SUM(amount) as total FROM sales;"
     request = "SELECT * FROM sales;"
     pg_hook  = PostgresHook(postgres_conn_id="mypsql",schema="postgres")
@@ -35,7 +35,7 @@ def generate_report(**kwargs):
 
 def transform(**kwargs):
     ti = kwargs['ti']
-    result = ti.xcom_pull(task_ids='generate_sales_report')
+    result = ti.xcom_pull(task_ids='extract_sales_report')
     print('Transform Data')
     df = pd.DataFrame(result)
     cantidad = df[0].count()
@@ -44,7 +44,7 @@ def transform(**kwargs):
 
 
 
-def log_report(**kwargs):
+def load(**kwargs):
     ti = kwargs['ti']
     report = ti.xcom_pull(task_ids='transform_sales_report')
     request = "INSERT INTO reports(count,total,date) VALUES ( %(count)s, %(total)s, %(date)s );"
@@ -58,9 +58,9 @@ def log_report(**kwargs):
     print(report)
     return
 
-task_generate_report = PythonOperator(
-    task_id = 'generate_sales_report',
-    python_callable=generate_report,
+task_extract = PythonOperator(
+    task_id = 'extract_sales_report',
+    python_callable=extract,
     provide_context=True,
     dag=dag
 )
@@ -72,11 +72,11 @@ task_transform = PythonOperator(
     dag=dag
 )
 
-task_log_report = PythonOperator(
-    task_id = 'log_report',
-    python_callable=log_report,
+task_load = PythonOperator(
+    task_id = 'load_report',
+    python_callable=load,
     provide_context=True,
     dag=dag
 )
 
-task_generate_report >> task_transform >> task_log_report
+task_extract >> task_transform >> task_load
